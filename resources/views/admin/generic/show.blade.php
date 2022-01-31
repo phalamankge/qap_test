@@ -36,7 +36,7 @@
                     <div class="btn-group mb-2"  role="group" aria-label="Basic example">
                         @foreach ($buttons as $button)
                             @if(empty($button['method']))
-                                <a class="{{ $button['class'] }} btnForm"  href="{{ $button['href'] }}" data-action="{{ $button['href'] }}">
+                                <a class="{{ $button['class'] }}"  href="{{ $button['href'] }}">
                                     <i class="{{ $button['icon'] }}"></i> {{ $button['label'] }}
                                 </a>
                             @else
