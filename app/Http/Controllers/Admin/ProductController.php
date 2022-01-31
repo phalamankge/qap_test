@@ -131,7 +131,38 @@ class ProductController extends Controller
 
         $product->load('categories', 'tags');
 
-        return view('admin.products.edit', compact('categories', 'product', 'tags'));
+        $title = trans('global.edit') . ' ' . $product->name;
+        //trans('cruds.product.title_singular');
+        $icon = 'fa fa-edit';
+        $action =  route("admin.products.update", [$product->id]);
+        $method = 'PUT';
+        //$columns => 'col-md-3';
+
+        $fields = array();
+
+        $keys = array(
+            'id', 'name', 'description', 'price', 'categories', 'tags',
+        );
+
+        foreach($keys as $key)
+        {
+            $fields[$key] = array(
+                'name' => $key,
+                'value' => $product->$key,
+                'label' => trans("cruds.product.fields.$key"),
+                'type' => 'text',
+                'required' => TRUE,
+                'columns' => 3,
+            );
+        }
+
+        $fields['description']['columns'] = 12;
+        $fields['tags']['required'] = FALSE;
+
+        $fields = $this->trimFields($fields, $product);
+
+        return view('admin.generic.edit', compact('categories',
+            'product', 'tags', 'title', 'icon', 'action', 'method', 'fields'));
     }
 
     public function update(UpdateProductRequest $request, Product $product)
@@ -159,7 +190,51 @@ class ProductController extends Controller
 
         $product->load('categories', 'tags');
 
-        return view('admin.products.show', compact('product'));
+        $title = $product->name;
+        //trans('global.show') . ' ' . trans('cruds.product.title');
+
+        $buttons = array(
+            'back_to_list' => array(
+                'href' => route('admin.products.index'),
+                'label' => trans('global.back_to_list'),
+                'icon' => 	'fa fa-arrow-left',
+                'class' => "btn btn-xs btn-info",
+            ),
+
+            'edit' => array(
+                'href' => route('admin.products.edit', $product->id),
+                'label' => trans('global.edit'),
+                'icon' => 	'fa fa-pencil',
+                'class' => 'btn btn-xs btn-warning',
+            ),
+            'delete' => array(
+                'href' => route('admin.products.destroy', $product->id),
+                'label' => trans('global.delete'),
+                'icon' => 	'fa fa-trash',
+                'class' => 'btn btn-xs btn-danger',
+                'method' => 'delete',
+                'confirm' => trans('global.areYouSure'),
+                'title' => trans('global.confirm'),
+            ),
+
+        );
+        $fields = array();
+        $keys = array(
+            'id', 'name', 'description', 'price', 'categories', 'tags',
+        );
+        foreach($keys as $key)
+        {
+            $fields[$key] = array(
+                'name' => $key,
+                'value' => $product->$key,
+                'label' => trans("cruds.product.fields.$key")
+            );
+        }
+
+        $fields = $this->trimFields($fields, $product);
+        //dd($fields['categories']['value']);
+
+        return view('admin.generic.show', compact('product', 'title', 'buttons', 'fields' ));
     }
 
     public function destroy(Product $product)
@@ -189,4 +264,19 @@ class ProductController extends Controller
 
         return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
     }
+
+    public function trimFields(array $fields, Product $product): array
+    {
+        $fields['categories']['value'] = [];
+        foreach ($product->categories as $cat)
+            $fields['categories']['value'][] = $cat->name;
+        $fields['categories']['value'] = implode(', ', $fields['categories']['value']);
+
+        $fields['tags']['value'] = [];
+        foreach ($product->tags as $tag)
+            $fields['tags']['value'][] = $tag->name;
+        $fields['tags']['value'] = implode(', ', $fields['tags']['value']);
+        return $fields;
+    }
 }
+
