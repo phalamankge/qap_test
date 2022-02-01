@@ -201,7 +201,7 @@ class ProductController extends Controller
                         'edit' => array(
                                         'href' => route('admin.products.edit', $product->id),
                                         'label' => trans('global.edit'),
-                                        'icon' => 	'fa fa-pencil',
+                                        'icon' => 	'fa fa-pencil fa-fw',
                                         'class' => 'btn btn-xs btn-warning',
                         ),
                         'delete' => array(
