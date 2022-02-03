@@ -51,58 +51,59 @@
                             <tbody>
                                 @foreach($products as $key => $product)
                                     <tr data-entry-id="{{ $product->id }}">
-                                        <td>
-                                            {{ $product->id ?? '' }}
-                                        </td>
-                                        <td>
-                                            {{ $product->name ?? '' }}
-                                        </td>
-                                        <td>
-                                            {{ $product->description ?? '' }}
-                                        </td>
-                                        <td>
-                                            {{ $product->price ?? '' }}
-                                        </td>
-                                        <td>
-                                            @foreach($product->categories as $key => $item)
-                                                <span>{{ $item->name }}</span>
-                                            @endforeach
-                                        </td>
-                                        <td>
-                                            @foreach($product->tags as $key => $item)
-                                                <span>{{ $item->name }}</span>
-                                            @endforeach
-                                        </td>
-                                        <td>
-                                            @if($product->photo)
-                                                <a href="{{ $product->photo->getUrl() }}" target="_blank" style="display: inline-block">
-                                                    <img src="{{ $product->photo->getUrl('thumb') }}">
-                                                </a>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @can('product_show')
-                                                <a class="btn btn-xs btn-primary" href="{{ route('frontend.products.show', $product->id) }}">
-                                                    {{ trans('global.view') }}
-                                                </a>
-                                            @endcan
+                                        <div class="col-md-{{ $field['columns'] ?? '3' }} form-group">
+                                            <td>
+                                                {{ $product->id ?? '' }}
+                                            </td>
+                                            <td>
+                                                {{ $product->name ?? '' }}
+                                            </td>
+                                            <td>
+                                                {{ $product->description ?? '' }}
+                                            </td>
+                                            <td>
+                                                {{ $product->price ?? '' }}
+                                            </td>
+                                            <td>
+                                                @foreach($product->categories as $key => $item)
+                                                    <span>{{ $item->name }}</span>
+                                                @endforeach
+                                            </td>
+                                            <td>
+                                                @foreach($product->tags as $key => $item)
+                                                    <span>{{ $item->name }}</span>
+                                                @endforeach
+                                            </td>
+                                            <td>
+                                                @if($product->photo)
+                                                    <a href="{{ $product->photo->getUrl() }}" target="_blank" style="display: inline-block">
+                                                        <img src="{{ $product->photo->getUrl('thumb') }}">
+                                                    </a>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @can('product_show')
+                                                    <a class="btn btn-xs btn-primary" href="{{ route('frontend.products.show', $product->id) }}">
+                                                        {{ trans('global.view') }}
+                                                    </a>
+                                                @endcan
 
-                                            @can('product_edit')
-                                                <a class="btn btn-xs btn-info" href="{{ route('frontend.products.edit', $product->id) }}">
-                                                    {{ trans('global.edit') }}
-                                                </a>
-                                            @endcan
+                                                @can('product_edit')
+                                                    <a class="btn btn-xs btn-info" href="{{ route('frontend.products.edit', $product->id) }}">
+                                                        {{ trans('global.edit') }}
+                                                    </a>
+                                                @endcan
 
-                                            @can('product_delete')
-                                                <form action="{{ route('frontend.products.destroy', $product->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                                    <input type="hidden" name="_method" value="DELETE">
-                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                    <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                                </form>
-                                            @endcan
+                                                @can('product_delete')
+                                                    <form action="{{ route('frontend.products.destroy', $product->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                                        <input type="hidden" name="_method" value="DELETE">
+                                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                                    </form>
+                                                @endcan
 
-                                        </td>
-
+                                            </td>
+                                         </div>
                                     </tr>
                                 @endforeach
                             </tbody>
