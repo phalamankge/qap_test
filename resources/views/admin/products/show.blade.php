@@ -28,7 +28,9 @@
                             {{ trans('cruds.product.fields.name') }}
                         </th>
                         <td>
-                            {{ $product->name }}
+                            @foreach($product->name as $key => $names)
+                                <span class="label label-info">{{ $names->name}}</span>
+                            @endforeach
                         </td>
                     </tr>
                     <tr>
@@ -36,7 +38,9 @@
                             {{ trans('cruds.product.fields.description') }}
                         </th>
                         <td>
-                            {{ $product->description }}
+                            @foreach($product->description as $key => $descriptions)
+                                <span class="label label-info">{{ $descriptions->name }}</span>
+                            @endforeach
                         </td>
                     </tr>
                     <tr>
@@ -44,7 +48,9 @@
                             {{ trans('cruds.product.fields.price') }}
                         </th>
                         <td>
-                            {{ $product->price }}
+                            @foreach($product->price as $key => $prices)
+                                <span class="label label-info">{{ $prices->name }}</span>
+                            @endforeach
                         </td>
                     </tr>
                     <tr>
