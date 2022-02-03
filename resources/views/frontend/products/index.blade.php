@@ -2,7 +2,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-12">
+        <div class="col-lg-4 col-sm-12">
             @can('product_create')
                 <div style="margin-bottom: 10px;" class="row">
                     <div class="col-lg-12">
